@@ -41,29 +41,31 @@ cacheSolve <- function(x, ...) {
 unittest <- function() {
 
      # Matrices used for the test
-     mat1 = matrix(c(2, 0, 0, 2), nrow=2)
-     mat1inv = solve(mat1)
-     mat2 = matrix(c(1, 2, 3, 4), nrow=2)
-     mat2inv = solve(mat2)
-     OK = TRUE
+     mat1 <- matrix(c(2, 0, 0, 2), nrow = 2)
+     mat1inv <- solve(mat1)
+     mat2 <- matrix(c(1, 2, 3, 4), nrow = 2)
+     mat2inv <- solve(mat2)
+     errors <- 0
 
      # Check that makeCacheMatrix works
-     mat = makeCacheMatrix(mat1)
+     mat <- makeCacheMatrix(mat1)
      if (!identical(mat1, mat$get())) {
           warning("Get doesn't return proper value")
-          OK = FALSE
+          errors <- errors + 1
      }
      mat$set(mat2)
      if (!identical(mat2, mat$get())) {
           warning("Get doesn't return the set value")
-          OK = FALSE
+          errors <- errors + 1
      }
      mat$setinverse(mat1inv)
      if (!identical(mat1inv, mat$getinverse())) {
           warning("Getinverse doesn't return the setinverse value")
-          OK = FALSE
+          errors <- errors + 1
      }
-     if (OK)
+     if (errors == 0)
           message("Everything OK!!")
+     else
+          warning(sprintf("%d errors detected", errors))
      
 }
