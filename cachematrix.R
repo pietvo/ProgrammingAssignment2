@@ -63,9 +63,42 @@ unittest <- function() {
           warning("Getinverse doesn't return the setinverse value")
           errors <- errors + 1
      }
+
+     # Check that cacheSolve works
+     # First we make a new CacheMatrix object
+     mat <- makeCacheMatrix(mat1)
+     # Calculate the inverse
+     matinv <- cacheSolve(mat)
+     # Check it
+     if (!identical(matinv, mat1inv)) {
+          warning("cacheSolve does not return the inverse")
+          errors <- errors + 1
+     }
+     # Now try it a second time and it should return the same
+     matinv <- cacheSolve(mat)
+     if (!identical(matinv, mat1inv)) {
+          warning("cacheSolve does not return the cached inverse")
+          errors <- errors + 1
+     }
+     # However we don't know if it did the caching properly
+     # (Except for a message)
+     # So we are now testing the caching by misleading the cache
+     mat$setinverse(mat2inv)
+     matinv <- cacheSolve(mat)
+     if (!identical(matinv, mat2inv)) {
+          warning("cacheSolve does not use cached value")
+          errors <- errors + 1
+     }
+     # reset the cache and try again
+     mat$setinverse(NULL)
+     matinv <- cacheSolve(mat)
+     if (!identical(matinv, mat1inv)) {
+          warning("cacheSolve does not calculate the inverse")
+          errors <- errors + 1
+     }
+     
      if (errors == 0)
           message("Everything OK!!")
      else
           warning(sprintf("%d errors detected", errors))
-     
 }
