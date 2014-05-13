@@ -96,6 +96,19 @@ unittest <- function() {
           warning("cacheSolve does not calculate the inverse")
           errors <- errors + 1
      }
+     # Now we try to use set to change the matrix and see if it gives the proper inverse
+     mat$set(mat2)
+     matinv <- cacheSolve(mat)
+     if (!identical(matinv, mat2inv)) {
+          warning("cacheSolve does not calculate the inverse after set")
+          errors <- errors + 1
+     }
+     # Try once more to get the cached value
+     matinv <- cacheSolve(mat)
+     if (!identical(matinv, mat2inv)) {
+          warning("cacheSolve does not calculate the inverse after set")
+          errors <- errors + 1
+     }
      
      if (errors == 0)
           message("Everything OK!!")
