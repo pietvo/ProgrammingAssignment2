@@ -17,7 +17,7 @@
 ## A "method" is really a function closure that "knows" to which matrix it belongs.
 
 makeCacheMatrix <- function(x = matrix()) {
-        # initialize the cacge to "empty"
+        # initialize the cache to "empty"
         inv <- NULL
         set <- function(y) {
                 x <<- y
